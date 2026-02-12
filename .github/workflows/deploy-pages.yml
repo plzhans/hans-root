@@ -1,0 +1,47 @@
+name: Deploy Hugo
+
+env:
+  PAGES_HOST: https://plzhans.com
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "public/**"
+      - ".github/workflows/deploy-pages.yml"
+
+  workflow_dispatch:
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy-pages:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ env.PAGES_HOST }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./public
+
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4
+
+      - name: Print deployed URL
+        run: echo "Deployed to ${{ steps.deploy.outputs.page_url }}"

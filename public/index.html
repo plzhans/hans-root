@@ -1,0 +1,161 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="refresh"
+      content="3; url=https://blog.plzhans.com"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>plzhans · 이동 중</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: radial-gradient(circle at top, #faf8ff 0%, #f5f7fb 40%, #eef2f8 100%);
+        --card-bg: rgba(255, 255, 255, 0.75);
+        --card-border: rgba(8, 20, 51, 0.08);
+        --text: #0d1a3b;
+        --accent: #4f46e5;
+        font-family: "Pretendard", "Noto Sans KR", system-ui, -apple-system,
+          BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: var(--bg);
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+      }
+
+      .card {
+        width: min(480px, 100%);
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 28px;
+        padding: 2.5rem;
+        backdrop-filter: blur(18px);
+        box-shadow: 0 40px 120px rgba(15, 23, 42, 0.25);
+        text-align: center;
+        animation: fadeIn 800ms ease-in-out;
+      }
+
+      .avatar {
+        width: 104px;
+        height: 104px;
+        border-radius: 50%;
+        margin: 0 auto 1.5rem;
+        border: 3px solid rgba(255, 255, 255, 0.85);
+        box-shadow: 0 22px 35px rgba(15, 23, 42, 0.25);
+        object-fit: cover;
+        object-position: center;
+        display: block;
+      }
+
+      h1 {
+        margin: 0 0 0.75rem;
+        font-size: clamp(2rem, 4vw, 2.4rem);
+        font-weight: 700;
+      }
+
+      p {
+        margin: 0 0 2rem;
+        color: rgba(13, 26, 59, 0.8);
+        line-height: 1.6;
+        font-size: 1rem;
+      }
+
+      .loader {
+        width: 64px;
+        height: 64px;
+        margin: 0 auto 1.25rem;
+        border-radius: 50%;
+        border: 4px solid rgba(79, 70, 229, 0.2);
+        border-top-color: var(--accent);
+        animation: spin 1.2s linear infinite;
+      }
+
+      .countdown {
+        font-size: 0.95rem;
+        color: rgba(13, 26, 59, 0.6);
+      }
+
+      a {
+        color: var(--accent);
+        font-weight: 600;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      @keyframes spin {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+    <script>
+      const TARGET = "https://blog.plzhans.com";
+      const DELAY_SECONDS = 3;
+      let remaining = DELAY_SECONDS;
+
+      function updateCountdown() {
+        const countdownEl = document.getElementById("countdown");
+        if (!countdownEl) return;
+        countdownEl.textContent = `${remaining}초 후 자동으로 이동합니다.`;
+        if (remaining === 0) {
+          window.location.href = TARGET;
+        }
+        remaining -= 1;
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+      });
+    </script>
+  </head>
+  <body>
+    <main class="card">
+      <img
+        class="avatar"
+        src="./images/avatar-plzhans.png"
+        alt="plzhans 프로필 이미지"
+        decoding="async"
+        loading="lazy"
+      />
+      <div class="loader" aria-hidden="true"></div>
+      <h1>페이지 이동 중입니다</h1>
+      <p>
+        plzhans 블로그로 안내드리고 있어요. 잠시 후 자동으로 이동합니다.<br />
+        혹시 자동 이동이 되지 않는다면 아래 버튼을 눌러주세요.
+      </p>
+      <p class="countdown" id="countdown" aria-live="polite"></p>
+      <a class="button" href="https://blog.plzhans.com">블로그로 바로가기</a>
+    </main>
+  </body>
+</html>
